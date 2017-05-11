@@ -1,4 +1,3 @@
-# Ensage
-Ensage.io
-============
+# Ensage.io
+
 Dota scripts Kappa.
