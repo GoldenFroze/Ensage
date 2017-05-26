@@ -141,10 +141,13 @@ namespace CourierOwner
 
             }
 
+
             var courierfontain = ClosestToFontain();
             var courierhero = ClosestToMyHero();
             var couriermouse = ClosestToMouse();
             var courierbottle = HavingBottle();
+
+            //anti reuse
             foreach (var courier in couriers)
             {
                 //Debug.Assert(_fountain != null, "_fountain != null");					
@@ -158,10 +161,14 @@ namespace CourierOwner
                         var burst1 = courierfontain.Spellbook.SpellR;
                         if (Menu.Item("Burst").GetValue<bool>() && courierfontain.IsFlying && burst1.CanBeCasted())
                             burst1.UseAbility();
-                        var takeAndDeliver =
-                        courier.Spellbook.Spells.FirstOrDefault(x => x.Id == AbilityId.courier_take_stash_and_transfer_items);
+                        courierfontain.Spellbook.SpellD.UseAbility();
 
-                        takeAndDeliver?.UseAbility(true);
+                    }
+                    else if (courier.Inventory.Items.Any())courier.Inventory.Stash.Any();
+                    {
+
+                        courier.Spellbook.SpellF.UseAbility();
+                        courier.Spellbook.SpellQ.UseAbility(true);
                     }
 
 
@@ -172,6 +179,7 @@ namespace CourierOwner
 
                 Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
             }
+
 
             //lock at base
             foreach (var courier in couriers.Where(courier => courier.Distance2D(_fountain) > 900))
