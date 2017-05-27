@@ -164,7 +164,11 @@ namespace CourierOwner
                         courierfontain.Spellbook.SpellD.UseAbility();
 
                     }
-                    else if (courier.Inventory.Items.Any())courier.Inventory.Stash.Any();
+                    else if (courier.Inventory.Items.Any())
+                    {
+                        courier.Inventory.Backpack.Any();
+                    }
+
                     {
 
                         courier.Spellbook.SpellF.UseAbility();
