@@ -166,7 +166,7 @@ namespace CourierOwner
                     }
                     else if (courier.Inventory.Items.Any())
                     {
-                        courier.Inventory.Backpack.Any();
+                        courier.Inventory.Backpack.AsParallel();
                     }
 
                     {
