@@ -14,7 +14,7 @@ namespace CourierOwner
 {
     internal static class Program
     {
-        private static readonly Menu Menu = new Menu("Courier Owner Air13", "cb", true);
+        private static readonly Menu Menu = new Menu("Courier Owner++", "cb", true);
 
         //private static bool owned = false;
         //private static Key keyOWNED = Key.I;
@@ -380,9 +380,9 @@ namespace CourierOwner
             if (Menu.Item("Forced").GetValue<KeyBind>().Active)
                 Drawing.DrawText("ANTIREUSE DELIVER", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 110, 130), new Vector2(26, 26), Color.Red, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             if (Menu.Item("Abuse").GetValue<KeyBind>().Active)
-                Drawing.DrawText("BOTTLE ABUSE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 85, 100), new Vector2(26, 26), Color.Cyan, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
+                Drawing.DrawText("BOTTLE ABUSE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 85, 100), new Vector2(26, 26), Color.GreenYellow, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             if (Menu.Item("Lock").GetValue<KeyBind>().Active)
-                Drawing.DrawText("LOCK AT BASE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 80, 70), new Vector2(26, 26), Color.White, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
+                Drawing.DrawText("LOCK AT BASE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 80, 70), new Vector2(26, 26), Color.Black, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
 
             /*
 			
