@@ -14,7 +14,8 @@ namespace CourierOwner
 {
     internal static class Program
     {
-        private static readonly Menu Menu = new Menu("Courier Owner++", "cb", true);
+        private static readonly Menu Menu =
+            new Menu("Courier Owner++", "cb", true, "courier_burst", true).SetFontColor(Color.Aqua);
 
         //private static bool owned = false;
         //private static Key keyOWNED = Key.I;
