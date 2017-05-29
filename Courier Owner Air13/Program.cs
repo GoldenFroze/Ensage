@@ -34,9 +34,10 @@ namespace CourierOwner
             //Menu.AddItem(new MenuItem("Selection", "Courier selection").SetValue(new KeyBind('I', KeyBindType.Press)));
 
             Menu.AddItem(new MenuItem("Burst", "Auto burst by BA and AD").SetValue(true).SetTooltip("Enable auto burst while abusing bottle or delivering items to you"));
-            Menu.AddItem(new MenuItem("Abuse", "Bottle Abuse").SetValue(new KeyBind('U', KeyBindType.Toggle, false)).SetTooltip("Courier deliver items and abuse bottle for you (antireus indeed)"));
-            Menu.AddItem(new MenuItem("Forced", "Anti Reuse deliver").SetValue(new KeyBind('Y', KeyBindType.Toggle, false)).SetTooltip("Courier deliver items to you (antireus indeed)"));
-            Menu.AddItem(new MenuItem("Lock", "Lock at fountain").SetValue(new KeyBind('I', KeyBindType.Toggle, false)).SetTooltip("Couriers lock at fountain (antireus indeed)"));
+            Menu.AddItem(new MenuItem("Abuse", "Bottle Abuse").SetValue(new KeyBind('0', KeyBindType.Toggle, false)).SetTooltip("Courier deliver items and abuse bottle for you (antireus indeed)"));
+            Menu.AddItem(new MenuItem("Forced", "Anti Reuse deliver").SetValue(new KeyBind('0', KeyBindType.Toggle, false)).SetTooltip("Courier deliver items to you (antireus indeed)"));
+            Menu.AddItem(new MenuItem("Lock", "Lock at fountain").SetValue(new KeyBind('0', KeyBindType.Toggle, false)).SetTooltip("Couriers lock at fountain (antireus indeed)"));
+            Menu.AddItem(new MenuItem("Secret Shop", "Secret Shop").SetValue(new KeyBind('0', KeyBindType.Toggle, false)).SetTooltip("Courier will go to secret shop (antireus indeed)"));
             Menu.AddItem(new MenuItem("Cd", "Rate").SetValue(new Slider(150, 30, 300)));
 
             Menu.AddSubMenu(avoidenemy);
@@ -196,10 +197,25 @@ namespace CourierOwner
             }
 
 
-
+            //secret shop
+            foreach (var courier in couriers)
+            {
+                if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active &&
+                    !Menu.Item("Abuse").GetValue<KeyBind>().Active)
+                {
+                    var burst1 = courierfontain.Spellbook.SpellR;
+                    if (Menu.Item("Burst").GetValue<bool>() && courierfontain.IsFlying && burst1.CanBeCasted())
+                        burst1.UseAbility();
+                    courierfontain.Spellbook.SpellD.UseAbility();
+                    {
+                        courier.Spellbook.SpellW.UseAbility();
+                    }
+                    Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
+                }
+            }
 
             //abuse bottle
-            foreach (var courier in couriers)
+                    foreach (var courier in couriers)
             {
 
 
@@ -384,7 +400,8 @@ namespace CourierOwner
                 Drawing.DrawText("BOTTLE ABUSE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 85, 100), new Vector2(26, 26), Color.GreenYellow, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             if (Menu.Item("Lock").GetValue<KeyBind>().Active)
                 Drawing.DrawText("LOCK AT BASE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 80, 70), new Vector2(26, 26), Color.Black, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
-
+            if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active)
+                Drawing.DrawText("SECRET SHOP", new Vector2((int) HUDInfo.ScreenSizeX() / 2 - 80, 70), new Vector2(26, 26), Color.BlueViolet,FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             /*
 			
 			var me = ObjectManager.LocalHero;
