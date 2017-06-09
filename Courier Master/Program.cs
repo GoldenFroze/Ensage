@@ -11,7 +11,7 @@ namespace Courier_Master
     internal static class Program
     {
         private static readonly Menu Menu =
-            new Menu("Courier Owner++", "cb", true, "courier_burst", true).SetFontColor(Color.Aqua);
+            new Menu("Courier Master", "cb", true, "courier_burst", true).SetFontColor(Color.Aqua);
 
         //private static bool owned = false;
         //private static Key keyOWNED = Key.I;
