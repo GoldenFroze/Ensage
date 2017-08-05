@@ -357,17 +357,17 @@ namespace Courier_Master
         {
             //Color
             if (Menu.Item("Forced").GetValue<KeyBind>().Active)
-                Drawing.DrawText("ANTIREUSE DELIVER", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 110, 130),
+                Drawing.DrawText("ANTIREUSE DELIVER", new Vector2((int) HUDInfo.ScreenSizeX() / 2 - 110, 130),
                     new Vector2(26, 26), Color.Red, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             if (Menu.Item("Abuse").GetValue<KeyBind>().Active)
-                Drawing.DrawText("BOTTLE ABUSE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 85, 100),
+                Drawing.DrawText("BOTTLE ABUSE", new Vector2((int) HUDInfo.ScreenSizeX() / 2 - 85, 100),
                     new Vector2(26, 26), Color.GreenYellow,
                     FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             if (Menu.Item("Lock").GetValue<KeyBind>().Active)
-                Drawing.DrawText("LOCK AT BASE", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 80, 70),
+                Drawing.DrawText("LOCK AT BASE", new Vector2((int) HUDInfo.ScreenSizeX() / 2 - 80, 70),
                     new Vector2(26, 26), Color.Blue, FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active)
-                Drawing.DrawText("SECRET SHOP", new Vector2((int)HUDInfo.ScreenSizeX() / 2 - 80, 70),
+                Drawing.DrawText("SECRET SHOP", new Vector2((int) HUDInfo.ScreenSizeX() / 2 - 75, 40),
                     new Vector2(26, 26), Color.DarkCyan,
                     FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
             /*
@@ -409,7 +409,7 @@ namespace Courier_Master
         {
             var myHero = ObjectManager.LocalHero;
             var Couriers = ObjectManager.GetEntities<Courier>().Where(x => x.IsAlive && x.Team == myHero.Team);
-            Courier[] closestCourier = { null };
+            Courier[] closestCourier = {null};
             foreach (var cour in Couriers.Where(cour =>
                 closestCourier[0] == null ||
                 closestCourier[0].Distance2D(myHero.Position) > cour.Distance2D(myHero.Position)))
@@ -422,7 +422,7 @@ namespace Courier_Master
         {
             var myHero = ObjectManager.LocalHero;
             var Couriers = ObjectManager.GetEntities<Courier>().Where(x => x.IsAlive && x.Team == myHero.Team);
-            Courier[] closestCourier = { null };
+            Courier[] closestCourier = {null};
             foreach (var cour in Couriers.Where(cour =>
                 closestCourier[0] == null ||
                 closestCourier[0].Distance2D(_fountain.Position) > cour.Distance2D(_fountain.Position)))
@@ -436,7 +436,7 @@ namespace Courier_Master
             var myHero = ObjectManager.LocalHero;
             var mousePosition = Game.MousePosition;
             var Couriers = ObjectManager.GetEntities<Courier>().Where(x => x.IsAlive && x.Team == myHero.Team);
-            Courier[] closestCourier = { null };
+            Courier[] closestCourier = {null};
             foreach (var cour in Couriers.Where(cour =>
                 closestCourier[0] == null ||
                 closestCourier[0].Distance2D(mousePosition) > cour.Distance2D(mousePosition)))
@@ -448,7 +448,7 @@ namespace Courier_Master
         {
             var myHero = ObjectManager.LocalHero;
             var Couriers = ObjectManager.GetEntities<Courier>().Where(x => x.IsAlive && x.Team == myHero.Team);
-            Courier[] closestCourier = { null };
+            Courier[] closestCourier = {null};
             foreach (var cour in Couriers.Where(cour =>
                 //closestCourier[0] == null ||
                     cour.Inventory.Items.FirstOrDefault(x => x.Name == "item_bottle") != null))
