@@ -152,7 +152,7 @@ namespace Zaio.Prediction
             {
                 Utils.Sleep(125, "invReborn_Prediction_Position");
                 var units =
-                    ObjectManager.GetEntitiesParallel<Unit>()
+                    ObjectManager.GetEntities<Unit>()
                                  .Where(
                                      x =>
                                          x.IsValid && x.IsAlive && x.Team != ObjectManager.LocalPlayer.Team &&

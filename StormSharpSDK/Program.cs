@@ -1,7 +1,7 @@
 ﻿// <copyright file="Program.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
-
+//Not ODSHARP
 namespace StormSharpSDK
 {
     using System;

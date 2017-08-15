@@ -1,7 +1,7 @@
 ﻿// <copyright file="StormSharp.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
-//Not OdSharpSDK
+//NOT ODSHARP
 namespace StormSharpSDK
 {
     using System;
@@ -214,7 +214,7 @@ namespace StormSharpSDK
             if (UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") && target != null)
             {
                 Owner.Attack(target);
-                await Await.Delay(500);
+                await Await.Delay(400);
             }
 
             //Vortex prioritization logic [do we have q/w enabled, do we have the mana to cast both, do they have lotus, do we have an overload modifier]

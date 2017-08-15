@@ -1,14 +1,17 @@
 ﻿// <copyright file="StormSharpConfig.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
+//NOT ODSHARP
 
 namespace StormSharpSDK
 {
     using System;
+
     using System.Collections.Generic;
 
-    using Ensage.Common.Menu;
     using Ensage.SDK.Menu;
+        
+    using Ensage.Common.Menu;
 
     public class StormSharpConfig
     {
@@ -35,6 +38,7 @@ namespace StormSharpSDK
                                { "storm_spirit_electric_vortex", true },
                                { "storm_spirit_ball_lightning", true }
                            };
+
 
             this.Menu = MenuFactory.Create("StormSharpSDK");
             this.Key = this.Menu.Item("Combo Key", new KeyBind(32));

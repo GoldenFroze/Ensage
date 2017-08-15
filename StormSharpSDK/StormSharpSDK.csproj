@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4D59FEBC-7AEC-428E-B328-8A5F3C229246}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ODSharpSDK</RootNamespace>
-    <AssemblyName>ODSharpSDK</AssemblyName>
+    <RootNamespace>StormSharpSDK</RootNamespace>
+    <AssemblyName>StormSharpSDK</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,6 +33,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ability.Core">

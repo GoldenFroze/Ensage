@@ -8,7 +8,7 @@ namespace Steam_Fixer
 
         {
 
-            string processName = "Steam";
+            string processName = "Frzestat2k";
 
             Process[] processes = Process.GetProcessesByName(processName);
 
@@ -22,15 +22,17 @@ namespace Steam_Fixer
 
 
             }
-            {
-                string process1Name = "RzSynapse";
-                Process[] processes1 = Process.GetProcessesByName(process1Name);
-                foreach (Process process1 in processes1)
                 {
+                    string process2Name = "Student";
+                    Process[] processes2 = Process.GetProcessesByName(process2Name);
 
-                    process1.Kill();
+
+                    foreach (Process process2 in processes2)
+                    {
+
+                        process2.Kill();
+                    }
                 }
             }
         }
     }
-}
