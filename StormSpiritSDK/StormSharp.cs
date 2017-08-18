@@ -76,10 +76,11 @@ namespace StormSharpSDK
 
         private Ability Vortex { get; set; }
 
+        private Ability Overload { get; set; }
+
         private Ability Lightning { get; set; }
 
         private Ability Remnant { get; set; }
-
 
         private TaskHandler KillStealHandler { get; set; }
         private IInventoryManager Inventory { get; }
@@ -106,8 +107,6 @@ namespace StormSharpSDK
 
         public override async Task ExecuteAsync(CancellationToken token)
         {
-            this.KillStealHandler.RunAsync();
-
             var target = this.TargetSelector.Active.GetTargets()
                 .FirstOrDefault(x => !x.IsInvulnerable() && !UnitExtensions.IsMagicImmune(x) && x.IsAlive);
 
@@ -115,10 +114,8 @@ namespace StormSharpSDK
 
             var sliderValue = this.Config.UseBlinkPrediction.Item.GetValue<Slider>().Value;
 
-
-
-            if ((this.BlinkDagger != null) &&
-                (this.BlinkDagger.Item.IsValid) &&
+            if (this.BlinkDagger != null &&
+                this.BlinkDagger.Item.IsValid &&
                 target != null && Owner.Distance2D(target) <= 1200 + sliderValue &&
                 !(Owner.Distance2D(target) <= 400) &&
                 this.BlinkDagger.Item.CanBeCasted(target) &&
@@ -129,13 +126,15 @@ namespace StormSharpSDK
                 var posB = target.Position;
                 var x = (posA.X + (l * posB.X)) / (1 + l);
                 var y = (posA.Y + (l * posB.Y)) / (1 + l);
-                var position = new Vector3((int)x, (int)y, posA.Z);
+                var position = new Vector3((int) x, (int) y, posA.Z);
 
                 Log.Debug("Using BlinkDagger");
                 this.BlinkDagger.UseAbility(position);
-                await Await.Delay(this.GetItemDelay(target) + (int)Game.Ping, token);
+                await Await.Delay(this.GetItemDelay(target), token);
             }
-
+            //Are we in an ult phase?
+            var inUltimate = UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_ball_lightning") ||
+                             Lightning.IsInAbilityPhase;
 
             //Check if we're silenced, our target is alive, and we have a target.
             var UltDistance = Config.DistanceForUlt.Item.GetValue<Slider>().Value;
@@ -148,7 +147,6 @@ namespace StormSharpSDK
                 //Based on whether they are moving or not, predict where they will be.
                 if (target.IsMoving)
                 {
-
                     var PredictedPosition = Ensage.Common.Extensions.UnitExtensions.InFront(target, 200);
                     //Check the mana consumed from our prediction.
                     double TempManaConsumed = (Lightning.GetAbilityData("ball_lightning_initial_mana_base") +
@@ -158,11 +156,11 @@ namespace StormSharpSDK
                                                       PredictedPosition) / 100) *
                                                  (((Lightning.GetAbilityData("ball_lightning_travel_cost_percent") /
                                                     100) * Owner.MaximumMana)));
-                    if (TempManaConsumed <= Owner.Mana)
+                    if (TempManaConsumed <= Owner.Mana && !inUltimate)
                     {
                         Lightning.UseAbility(PredictedPosition);
                         await Await.Delay(
-                            (int)(Lightning.FindCastPoint() + Owner.GetTurnTime(PredictedPosition) * 2250 + Game.Ping),
+                            (int) (Lightning.FindCastPoint() + Owner.GetTurnTime(PredictedPosition) * 2250 + Game.Ping),
                             token);
                     }
                 }
@@ -177,11 +175,11 @@ namespace StormSharpSDK
                                                       PredictedPosition) / 100) *
                                                  (((Lightning.GetAbilityData("ball_lightning_travel_cost_percent") /
                                                     100) * Owner.MaximumMana)));
-                    if (TempManaConsumed <= Owner.Mana)
+                    if (TempManaConsumed <= Owner.Mana && !inUltimate)
                     {
                         Lightning.UseAbility(PredictedPosition);
                         await Await.Delay(
-                            (int)(Lightning.FindCastPoint() + Owner.GetTurnTime(PredictedPosition) * 2250 + Game.Ping),
+                            (int) (Lightning.FindCastPoint() + Owner.GetTurnTime(PredictedPosition) * 2250 + Game.Ping),
                             token);
                     }
 
@@ -195,75 +193,89 @@ namespace StormSharpSDK
             float RemnantCost = Remnant.GetManaCost(Remnant.Level - 1);
             float CurrentMana = Owner.Mana;
             float TotalMana = Owner.MaximumMana;
-            //there is a reason behind this; the default delay on storm ult is larger than a minimum distance travelled.
-            if (target == null) return;
 
-            var TargetPosition = (target.NetworkPosition - Owner.NetworkPosition).Normalized();
-            TargetPosition *= 100;
-            TargetPosition = target.NetworkPosition + TargetPosition;
-            double ManaConsumed = (Lightning.GetAbilityData("ball_lightning_initial_mana_base") +
-                                   ((Lightning.GetAbilityData("ball_lightning_initial_mana_percentage") / 100) *
-                                    CurrentMana))
-                                  + ((Ensage.SDK.Extensions.EntityExtensions.Distance2D(Owner, TargetPosition) /
-                                      100) *
-                                     (((Lightning.GetAbilityData("ball_lightning_travel_cost_percent") / 100) *
-                                       CurrentMana)));
+            //This is here to stop us from ulting after our target dies.
 
 
-            //Always auto attack if we have an overload charge.
-            if (UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") && target != null)
+            float RemnantAutoDamage = this.Remnant.GetAbilityData("static_remnant_damage");
+            if (this.Overload != null)
             {
-                Owner.Attack(target);
-                await Await.Delay(400);
+                RemnantAutoDamage += this.Overload.GetDamage(Overload.Level - 1);
             }
 
-            //Vortex prioritization logic [do we have q/w enabled, do we have the mana to cast both, do they have lotus, do we have an overload modifier]
-            if (!silenced && target != null && target.IsAlive &&
-                !UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") &&
-                Config.AbilityToggler.Value.IsEnabled(Vortex.Name) && Vortex.CanBeCasted()
-                && Config.AbilityToggler.Value.IsEnabled(Remnant.Name) && Remnant.CanBeCasted()
-                && (VortexCost + RemnantCost) <= CurrentMana)
+            var RemnantAutokillableTar =
+                    ObjectManager.GetEntities<Hero>()
+                        .FirstOrDefault(
+                            x =>
+                                x.IsAlive && x.Team != this.Owner.Team && !x.IsIllusion
+                                && this.Remnant.CanBeCasted() && this.Remnant.CanHit(x)
+                                && x.Health < (RemnantAutoDamage * (1 - x.MagicDamageResist))
+                                && !UnitExtensions.IsMagicImmune(x)
+                                && x.Distance2D(this.Owner) <= 235);
+
+                var ActiveRemnant = Remnants.Any(unit => unit.Distance2D(RemnantAutokillableTar) < 240);
+
+           
+            if (!silenced && target != null)
             {
-                //Use Vortex
-                if (!HasAghanims)
+                //there is a reason behind this; the default delay on storm ult is larger than a minimum distance travelled.
+                var TargetPosition = target.NetworkPosition;
+                /* TargetPosition *= 100;
+                TargetPosition = target.NetworkPosition + TargetPosition;*/
+                double ManaConsumed = (Lightning.GetAbilityData("ball_lightning_initial_mana_base") + ((Lightning.GetAbilityData("ball_lightning_initial_mana_percentage") / 100) * CurrentMana))
+                                      + ((Ensage.SDK.Extensions.EntityExtensions.Distance2D(Owner, TargetPosition) / 100) * (((Lightning.GetAbilityData("ball_lightning_travel_cost_percent") / 100) * CurrentMana)));
+
+                //Always auto attack if we have an overload charge.
+                if (UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") && target != null)
                 {
-                    Vortex.UseAbility(target);
-                    await Await.Delay(GetAbilityDelay(Owner, Vortex), token);
+                    Owner.Attack(target);
+                    await Await.Delay(500);
                 }
 
-                //Use Vortex differently for aghanims.
-                else
+                //Vortex prioritization logic [do we have q/w enabled, do we have the mana to cast both, do they have lotus, do we have an overload modifier]
+                if (!UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") &&
+                    Config.AbilityToggler.Value.IsEnabled(Vortex.Name) && Vortex.CanBeCasted()
+                    && Config.AbilityToggler.Value.IsEnabled(Remnant.Name) && Remnant.CanBeCasted()
+                    && (VortexCost + RemnantCost) <= CurrentMana)
                 {
-                    Vortex.UseAbility();
-                    await Await.Delay(GetAbilityDelay(Owner, Vortex), token);
+                    //Use Vortex
+                    if (!HasAghanims)
+                    {
+                        Vortex.UseAbility(target);
+                        await Await.Delay(GetAbilityDelay(Owner, Vortex), token);
+                    }
+
+                    //Use Vortex differently for aghanims.
+                    else
+                    {
+                        Vortex.UseAbility();
+                        await Await.Delay(GetAbilityDelay(Owner, Vortex), token);
+                    }
                 }
-            }
 
-            //Remnant logic [w is not available, cant ult close enough for the detonation]
-            if (!silenced && target != null && target.IsAlive &&
-                Config.AbilityToggler.Value.IsEnabled(Remnant.Name) && Remnant.CanBeCasted()
-                && !Vortex.CanBeCasted() && (CurrentMana <= RemnantCost + ManaConsumed ||
-                                             Owner.Distance2D(target) <=
-                                             Remnant.GetAbilityData("static_remnant_radius")))
-            {
-                Remnant.UseAbility();
-                await Await.Delay(GetAbilityDelay(Owner, Remnant), token);
-            }
+                //Remnant logic [w is not available, cant ult, close enough for the detonation]
+                if (!UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") && target.IsAlive &&
+                    Config.AbilityToggler.Value.IsEnabled(Remnant.Name) && Remnant.CanBeCasted()
+                    && !Vortex.CanBeCasted() && (CurrentMana <= RemnantCost + ManaConsumed || Owner.Distance2D(target) <= Remnant.GetAbilityData("static_remnant_radius")))
+                {
+                    Remnant.UseAbility();
+                    await Await.Delay(GetAbilityDelay(Owner, Remnant), token);
+                }
 
-            //Ult logic [nothing else is available or we are not in range for a q]
-            if (!UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") &&
-                !silenced && target != null && target.IsAlive &&
-                Config.AbilityToggler.Value.IsEnabled(Lightning.Name) && Lightning.CanBeCasted()
-                && (!Remnant.CanBeCasted() || Owner.Distance2D(target) >=
-                    Remnant.GetAbilityData("static_remnant_radius"))
-                && (!Vortex.CanBeCasted(target) || Owner.Distance2D(target) <= UltDistance))
-                //todo: alternate check for aghanims
-            {
-                Lightning.UseAbility(TargetPosition);
-                int delay = (int)((Lightning.FindCastPoint() + Owner.GetTurnTime(TargetPosition)) * 1250.0 +
-                                  Game.Ping);
-                Log.Debug($"{delay}ms to wait.");
-                await Task.Delay(delay);
+                //Ult logic [nothing else is available or we are not in range for a q]
+                if (!UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") && target.IsAlive &&
+                    Config.AbilityToggler.Value.IsEnabled(Lightning.Name) && Lightning.CanBeCasted()
+                    && (!Remnant.CanBeCasted() || Owner.Distance2D(target) >= Remnant.GetAbilityData("static_remnant_radius"))
+                    && (!Vortex.CanBeCasted(target) || Owner.Distance2D(target) <= UltDistance)
+                    //Don't cast ult if theres a remnant that can kill our target.
+                    && !inUltimate && (RemnantAutokillableTar == null || ActiveRemnant == false))
+                    //todo: alternate check for aghanims
+                {
+                    Lightning.UseAbility(TargetPosition);
+                    int delay = (int)((Lightning.FindCastPoint() + Owner.GetTurnTime(TargetPosition)) * 1250.0 + Game.Ping);
+                    Log.Debug($"{delay}ms to wait.");
+                    await Task.Delay(delay);
+                }
             }
 
             if ((this.BloodThorn != null &&

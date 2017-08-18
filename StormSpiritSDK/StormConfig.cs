@@ -6,15 +6,14 @@
 //Beminee
 //Ihatevim
 
+
 namespace StormSharpSDK
 {
     using System;
-
     using System.Collections.Generic;
 
-    using Ensage.SDK.Menu;
-
     using Ensage.Common.Menu;
+    using Ensage.SDK.Menu;
 
     public class StormSharpConfig
     {
@@ -41,7 +40,6 @@ namespace StormSharpSDK
                 { "storm_spirit_electric_vortex", true },
                 { "storm_spirit_ball_lightning", true }
             };
-
 
             this.Menu = MenuFactory.Create("StormSpiritSDK");
             this.Key = this.Menu.Item("Combo Key", new KeyBind(32));
