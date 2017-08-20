@@ -6,8 +6,10 @@
 //Beminee
 //Ihatevim
 
+
 namespace StormSharpSDK
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -204,7 +206,7 @@ namespace StormSharpSDK
             }
 
             var RemnantAutokillableTar =
-                    ObjectManager.GetEntities<Hero>()
+                    ObjectManager.GetEntitiesFast<Hero>()
                         .FirstOrDefault(
                             x =>
                                 x.IsAlive && x.Team != this.Owner.Team && !x.IsIllusion
@@ -396,13 +398,56 @@ namespace StormSharpSDK
 
             return spellAmp;
         }
-
         private IEnumerable<Unit> Remnants
             => ObjectManager.GetEntities<Unit>().Where(x => x.Name == "npc_dota_ember_spirit_remnant");
 
-        public virtual async Task KillStealAsync(CancellationToken args)
+        public virtual async Task KillStealAsync()
         {
-            //todo:killsteal
+            float RemnantAutoDamage = this.Remnant.GetAbilityData("static_remnant_damage") + this.Overload.GetDamage(Overload.Level - 1);
+            RemnantAutoDamage += (Owner.MinimumDamage + Owner.BonusDamage);
+            RemnantAutoDamage *= GetSpellAmp();
+
+            float AutoDamage = this.Overload.GetDamage(Overload.Level - 1);
+            AutoDamage += (Owner.MinimumDamage + Owner.BonusDamage);
+            AutoDamage *= GetSpellAmp();
+
+            var RemnantAutokillableTar =
+                ObjectManager.GetEntitiesFast<Hero>()
+                    .FirstOrDefault(
+                        x =>
+                            x.IsAlive && x.Team != this.Owner.Team && !x.IsIllusion
+                            && this.Remnant.CanBeCasted() && this.Remnant.CanHit(x)
+                            && x.Health < (RemnantAutoDamage * (1 - x.MagicDamageResist))
+                            && !UnitExtensions.IsMagicImmune(x)
+                            && x.Distance2D(this.Owner) <= 235);
+
+            var AutokillableTar =
+                ObjectManager.GetEntitiesFast<Hero>()
+                    .FirstOrDefault(
+                        x =>
+                            x.IsAlive && x.Team != this.Owner.Team && !x.IsIllusion
+                            && x.Health < AutoDamage * (1 - x.MagicDamageResist)
+                            && !UnitExtensions.IsMagicImmune(x)
+                            && x.Distance2D(this.Owner) <= 480);
+
+
+
+            if (UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload") && AutokillableTar != null)
+            {
+                Owner.Attack(AutokillableTar);
+                await Await.Delay(500);
+            }
+            if (!UnitExtensions.IsSilenced(Owner))
+            {
+                if (RemnantAutokillableTar != null && AutokillableTar == null || AutokillableTar != null && !UnitExtensions.HasModifier(Owner, "modifier_storm_spirit_overload"))
+                {
+                    Remnant.UseAbility();
+                    await Await.Delay((int)Game.Ping + 50);
+                    Owner.Attack(RemnantAutokillableTar);
+                    await Await.Delay(500);
+                }
+            }
+
         }
 
         protected int GetAbilityDelay(Unit unit, Ability ability)
@@ -420,13 +465,26 @@ namespace StormSharpSDK
             return (int)((this.Owner.GetTurnTime(pos) * 1000.0) + Game.Ping) + 100;
         }
 
+        private void GameDispatcher_OnIngameUpdate(EventArgs args)
+        {
+            if (!this.Config.KillStealEnabled.Value)
+            {
+                return;
+            }
+
+            if (!Game.IsPaused && Owner.IsAlive && !UnitExtensions.IsChanneling(Owner))
+            {
+                Await.Block("MyKillstealer", KillStealAsync);
+            }
+        }
+
         protected override void OnActivate()
         {
-            this.KillStealHandler = UpdateManager.Run(this.KillStealAsync, true);
-
+            GameDispatcher.OnIngameUpdate += GameDispatcher_OnIngameUpdate;
             this.Remnant = UnitExtensions.GetAbilityById(this.Owner, AbilityId.storm_spirit_static_remnant);
             this.Vortex = UnitExtensions.GetAbilityById(this.Owner, AbilityId.storm_spirit_electric_vortex);
             this.Lightning = UnitExtensions.GetAbilityById(this.Owner, AbilityId.storm_spirit_ball_lightning);
+            this.Overload = UnitExtensions.GetAbilityById(this.Owner, AbilityId.storm_spirit_overload);
 
 
 

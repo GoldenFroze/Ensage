@@ -11,6 +11,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Ensage.io")]
 [assembly: AssemblyCopyright("Ensage.io")]
 [assembly: AssemblyTrademark("Ensage.io")]
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.0.0.4")]
+[assembly: AssemblyFileVersion("1.0.0.4")]
 
