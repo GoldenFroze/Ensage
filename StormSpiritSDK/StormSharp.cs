@@ -332,11 +332,12 @@ namespace StormSharpSDK
                 await Await.Delay(this.GetItemDelay(target) + (int)Game.Ping, token);
             }
 
-            if ((this.HurricanePike != null &&
-                 (this.HurricanePike.Item.IsValid &&
-                  target != null &&
-                  this.HurricanePike.Item.CanBeCasted() &&
-                  this.Config.ItemToggler.Value.IsEnabled("item_hurricane_pike"))))
+            if ((this.HurricanePike != null) && (double)(this.Owner.Health / this.Owner.MaximumHealth) * 100 <=
+                (double)Config.HurricanePercentage.Item.GetValue<Slider>().Value &&
+                this.HurricanePike.Item.IsValid &&
+                target != null &&
+                this.HurricanePike.Item.CanBeCasted() &&
+                this.Config.ItemToggler.Value.IsEnabled("item_hurricane_pike"))
             {
                 Log.Debug("Using HurricanePike");
                 this.HurricanePike.UseAbility(target);

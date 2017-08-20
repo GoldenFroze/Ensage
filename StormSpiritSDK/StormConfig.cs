@@ -48,6 +48,7 @@ namespace StormSharpSDK
             this.KillStealEnabled.Item.Tooltip = "Setting this to false will disable killsteal.";
             this.UseBlinkPrediction = this.Menu.Item("Blink Prediction", new Slider(200, 0, 600));
             this.UseBlinkPrediction.Item.Tooltip = "Will blink to set distance. Set to 0 if you want to disable it.";
+            this.HurricanePercentage = this.Menu.Item("Hurricane Usage Percent", new Slider(20, 0, 100));
             this.DistanceForUlt = this.Menu.Item("Max Distance for Ult", new Slider(1000, 0, 10000));
             this.DistanceForUlt.Item.Tooltip = "Enemies outside of this range will not be chased.";
             this.AbilityToggler = this.Menu.Item("Ability Toggler", new AbilityToggler(spellDict));
@@ -63,6 +64,8 @@ namespace StormSharpSDK
         // public MenuItem<Slider> MinimumTargetToUlti { get; }
 
         public MenuItem<AbilityToggler> AbilityToggler { get; }
+
+        public MenuItem<Slider> HurricanePercentage { get; }
 
         public MenuItem<KeyBind> Key { get; }
 
