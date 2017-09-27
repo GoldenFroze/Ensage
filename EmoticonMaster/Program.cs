@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace EmoticonsMaster
 {
-    internal class Program
+    public class Program
     {
         private const int WmKeyup = 0x0101;
 
