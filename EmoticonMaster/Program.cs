@@ -30,7 +30,7 @@ namespace EmoticonsMaster
             "bts3_bristle", "bts3_godz", "bts3_lina", "bts3_merlini", "bts3_rosh", "ti4copper", "ti4bronze",
             "ti4silver", "ti4gold", "ti4platinum", "ti4diamond", "bc_emoticon_hundred", "bc_emoticon_fire",
             "bc_emoticon_okay", "bc_emoticon_check", "bc_emoticon_eyes", "bc_emoticon_frog", "bc_emoticon_flex",
-            "monkey_king_ti6_charm", "huh_ti5_charm", "aegis"
+            "monkey_king_ti6_charm", "huh_ti5_charm", "aegis_2016"
         };
 
         private static readonly string[] emo =
@@ -38,7 +38,7 @@ namespace EmoticonsMaster
             "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
             "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
             "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
             "", "", "", "", ""
         };
 
