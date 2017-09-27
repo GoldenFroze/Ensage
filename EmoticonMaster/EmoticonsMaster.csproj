@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F2C422B4-60E9-4908-94EC-37B768AF32F0}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EmoticonMaster</RootNamespace>
     <AssemblyName>EmoticonMaster</AssemblyName>
@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <!-- NET -->
     <Reference Include="System" />
@@ -45,53 +48,53 @@
   <ItemGroup>
     <!-- Ensage -->
     <Reference Include="SharpDX">
-      <HintPath>..\..\..\..\..\..\..\GoldenFroze(Staff)\References\SharpDX.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\..\..\..\..\..\GoldenFroze(Staff)\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.XInput">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.XInput.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>..\..\..\..\..\..\..\GoldenFroze(Staff)\References\Ensage.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\Ensage.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- PlaySharp -->
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- SDK -->
     <Reference Include="clipper_library">
-      <HintPath>C:\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>..\..\..\..\..\..\..\GoldenFroze(Staff)\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.SDK">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.SDK.dll</HintPath>
+      <HintPath>C:\GoldenFroze(Staff)\References\Ensage.SDK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
