@@ -5,14 +5,14 @@ using Ensage.Common;
 using Ensage.Common.Menu;
 using SharpDX;
 
-namespace Emoticons
+namespace EmoticonsMaster
 {
     internal class Program
     {
         private const int WmKeyup = 0x0101;
 
         private static readonly Menu Menu =
-            new Menu("Emoticons", "cb", true, "rune_bounty", true).SetFontColor(Color.Blue);
+            new Menu("Emoticons Master", "cb", true, "rune_bounty", true).SetFontColor(Color.Blue);
 
         public static Dictionary<string, DotaTexture> _textureCache = new Dictionary<string, DotaTexture>();
         private static Vector2 startloc, diff;
