@@ -168,7 +168,7 @@ namespace EmoticonsMaster
                 ? (_leftMouseIsPress ? new Color(0, 0, 0, 200) : new Color(0, 0, 0, 100))
                 : new Color(0, 0, 0, 150);
             Drawing.DrawRect(loc, new Vector2(w, h), newColor);
-            Drawing.DrawText("_", loc + new Vector2(6, 2), Color.Blue,
+            Drawing.DrawText("-", loc + new Vector2(6, 2), Color.Blue,
                 FontFlags.AntiAlias | FontFlags.DropShadow);
         }
     }
