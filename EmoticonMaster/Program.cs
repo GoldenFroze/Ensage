@@ -30,7 +30,7 @@ namespace EmoticonsMaster
             "bts3_bristle", "bts3_godz", "bts3_lina", "bts3_merlini", "bts3_rosh", "ti4copper", "ti4bronze",
             "ti4silver", "ti4gold", "ti4platinum", "ti4diamond", "bc_emoticon_hundred", "bc_emoticon_fire",
             "bc_emoticon_okay", "bc_emoticon_check", "bc_emoticon_eyes", "bc_emoticon_frog", "bc_emoticon_flex",
-            "monkey_king_ti6_charm", "huh_ti5_charm", "aegis_2016"
+            "monkey_king_ti6_charm", "huh_ti5_charm", "aegis_2016","unicorn","drunk","give","thumbs_up","thumbs_down"
         };
 
         private static readonly string[] emo =
@@ -39,7 +39,7 @@ namespace EmoticonsMaster
             "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
             "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
             "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", ""
+            "", "", "", "", "","","","","",""
         };
 
         private static void Main(string[] args)
@@ -77,7 +77,7 @@ namespace EmoticonsMaster
             {
                 Drawing.DrawRect(startloc, new Vector2(300, 300), GetTexture("materials/ensage_ui/menu/itembg1.vmat"));
                 DrawToggleButton(startloc + new Vector2(0, 280), 300, 20, ref team);
-                for (var i = 0; i < 89; i++)
+                for (var i = 0; i < 94; i++)
                     DrawEmoButton(startloc + new Vector2(15 + i % 11 * 25, 25 + i / 11 * 25), 20, 20, emo[i], name[i]);
             }
             else
