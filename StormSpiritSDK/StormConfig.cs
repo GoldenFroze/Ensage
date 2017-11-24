@@ -13,6 +13,7 @@ namespace StormSharpSDK
     using System.Collections.Generic;
 
     using Ensage.Common.Menu;
+
     using Ensage.SDK.Menu;
 
     public class StormSharpConfig
@@ -31,7 +32,9 @@ namespace StormSharpSDK
                 { "item_orchid", true },
                 { "item_rod_of_atos", true },
                 { "item_veil_of_discord", true },
-                { "item_mjollnir", true }
+                { "item_mjollnir", true },
+                { "item_nullifier", true },
+
             };
 
             var spellDict = new Dictionary<string, bool>
@@ -78,6 +81,7 @@ namespace StormSharpSDK
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
+
 
         protected virtual void Dispose(bool disposing)
         {

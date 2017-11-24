@@ -23,7 +23,6 @@ namespace StormSharpSDK
     using Ensage.Common.Threading;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Handlers;
-    using Ensage.SDK.Helpers;
     using Ensage.SDK.Inventory;
     using Ensage.SDK.Orbwalker.Modes;
     using Ensage.SDK.Prediction;
@@ -106,6 +105,8 @@ namespace StormSharpSDK
 
         [ItemBinding]
         public item_veil_of_discord VeilofDiscord { get; private set; }
+        [ItemBinding]
+        public item_nullifier Nullifier { get; private set; } 
 
         public override async Task ExecuteAsync(CancellationToken token)
         {
@@ -149,7 +150,7 @@ namespace StormSharpSDK
                 //Based on whether they are moving or not, predict where they will be.
                 if (target.IsMoving)
                 {
-                    var PredictedPosition = Ensage.Common.Extensions.UnitExtensions.InFront(target, 200);
+                    var PredictedPosition = Ensage.Common.Extensions.UnitExtensions.InFront(target,0);
                     //Check the mana consumed from our prediction.
                     double TempManaConsumed = (Lightning.GetAbilityData("ball_lightning_initial_mana_base") +
                                                ((Lightning.GetAbilityData("ball_lightning_initial_mana_percentage") /
@@ -222,7 +223,7 @@ namespace StormSharpSDK
             {
                 //there is a reason behind this; the default delay on storm ult is larger than a minimum distance travelled.
                 var TargetPosition = target.NetworkPosition;
-                /* TargetPosition *= 100;
+                /*TargetPosition *= 100;
                 TargetPosition = target.NetworkPosition + TargetPosition;*/
                 double ManaConsumed = (Lightning.GetAbilityData("ball_lightning_initial_mana_base") + ((Lightning.GetAbilityData("ball_lightning_initial_mana_percentage") / 100) * CurrentMana))
                                       + ((Ensage.SDK.Extensions.EntityExtensions.Distance2D(Owner, TargetPosition) / 100) * (((Lightning.GetAbilityData("ball_lightning_travel_cost_percent") / 100) * CurrentMana)));
@@ -280,11 +281,22 @@ namespace StormSharpSDK
                 }
             }
 
-            if ((this.BloodThorn != null &&
+            if ((this.Nullifier != null &&
+                 (this.Nullifier.Item.IsValid &&
+                  target != null &&
+                  this.Nullifier.Item.CanBeCasted(target) &&
+                  this.Config.ItemToggler.Value.IsEnabled("item_nullifier"))))
+            { 
+                Log.Debug("Using Nullifier");
+            this.Nullifier.UseAbility(target);
+            await Await.Delay(this.GetItemDelay(target) + (int)Game.Ping, token);
+        }
+
+                if ((this.BloodThorn != null &&
                  (this.BloodThorn.Item.IsValid &&
                   target != null &&
                   this.BloodThorn.Item.CanBeCasted(target) &&
-                  this.Config.ItemToggler.Value.IsEnabled(this.BloodThorn.Item.Name))))
+                  this.Config.ItemToggler.Value.IsEnabled("item_bloodthorn"))))
             {
                 Log.Debug("Using Bloodthorn");
                 this.BloodThorn.UseAbility(target);
@@ -380,6 +392,7 @@ namespace StormSharpSDK
         {
             // spell amp
             var me = Context.Owner as Hero;
+
             var spellAmp = (100.0f + me.TotalIntelligence / 16.0f) / 100.0f;
 
             var aether = Owner.GetItemById(ItemId.item_aether_lens);
@@ -388,13 +401,12 @@ namespace StormSharpSDK
                 spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
-            var talent =
-                Owner.Spellbook.Spells.FirstOrDefault(
-                    x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
+          
 
-            if (talent != null)
+            var kaya = Owner.GetItemById(AbilityId.item_trident);
+            if (kaya != null)
             {
-                spellAmp += talent.AbilitySpecialData.First(x => x.Name == "value").Value / 100.0f;
+                spellAmp += kaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             return spellAmp;
