@@ -25,16 +25,16 @@ namespace Courier_Master
         {
             var avoidenemy = new Menu("AvoidEnemy", "AvoidEnemy");
             avoidenemy.AddItem(new MenuItem("AvoidEnemy.AvoidEnemy1", "Enable Avoid Enemy").SetValue(true)
-                .SetTooltip("Courier will use shield"));
+                .SetTooltip("Courier will use Shield"));
             avoidenemy.AddItem(new MenuItem("AvoidEnemy.Range", "Range").SetValue(new Slider(700, 100, 1000)));
             Menu.AddItem(new MenuItem("Forced", "Anti Reuse deliver")
                 .SetValue(new KeyBind('0', KeyBindType.Toggle, false))
                 .SetTooltip("Courier deliver items to you (antireus indeed)"));
             Menu.AddItem(new MenuItem("Lock", "Lock at fountain").SetValue(new KeyBind('0', KeyBindType.Toggle, false))
-                .SetTooltip("Couriers lock at fountain (antireus indeed)"));
+                .SetTooltip("Couriers lock at fountain"));
             Menu.AddItem(new MenuItem("Secret Shop", "Secret Shop")
                 .SetValue(new KeyBind('0', KeyBindType.Toggle, false))
-                .SetTooltip("Courier will go to secret shop (antireus indeed)"));
+                .SetTooltip("Courier will go to secret shop"));
             Menu.AddItem(new MenuItem("Cd", "Rate").SetValue(new Slider(150, 30, 300)));
             Menu.AddSubMenu(avoidenemy);
             Menu.AddToMainMenu();
@@ -96,17 +96,18 @@ namespace Courier_Master
             }
 
 
-            //anti reuse
+            //Deliver(Anti reuse)
             foreach (var courier in couriers)
             {
                 //Debug.Assert(_fountain != null, "_fountain != null");					
                 if (Menu.Item("Forced").GetValue<KeyBind>().Active)
+                {
                     courier.GetAbilityById(AbilityId.courier_take_stash_and_transfer_items).UseAbility();
 
-                Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
+                    Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
+                }
             }
-
-
+            
             //lock at base
             foreach (var courier in couriers.Where(courier => courier.Distance2D(_fountain) > 900))
                 if (Menu.Item("Lock").GetValue<KeyBind>().Active && !Menu.Item("Forced").GetValue<KeyBind>().Active)
