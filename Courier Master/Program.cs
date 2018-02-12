@@ -13,10 +13,6 @@ namespace Courier_Master
         private static readonly Menu Menu =
             new Menu("Courier Master", "cb", true, "courier_burst", true).SetFontColor(Color.Aqua);
 
-        //private static bool owned = false;
-        //private static Key keyOWNED = Key.I;
-        //private static Key toggleOWNED = Key.O;
-
 
         private static bool _loaded;
         private static Unit _fountain;
@@ -27,10 +23,6 @@ namespace Courier_Master
             avoidenemy.AddItem(new MenuItem("AvoidEnemy.AvoidEnemy1", "Enable Avoid Enemy").SetValue(true)
                 .SetTooltip("Courier will use shield"));
             avoidenemy.AddItem(new MenuItem("AvoidEnemy.Range", "Range").SetValue(new Slider(700, 100, 1000)));
-
-            //Menu.AddItem(new MenuItem("Selection", "Courier selection").SetValue(new KeyBind('I', KeyBindType.Press)));
-
-
             Menu.AddItem(new MenuItem("Forced", "Anti Reuse deliver")
                 .SetValue(new KeyBind('0', KeyBindType.Toggle, false))
                 .SetTooltip("Courier deliver items to you (antireus indeed)"));
@@ -40,17 +32,12 @@ namespace Courier_Master
                 .SetValue(new KeyBind('0', KeyBindType.Toggle, false))
                 .SetTooltip("Courier will go to secret shop (antireus indeed)"));
             Menu.AddItem(new MenuItem("Cd", "Rate").SetValue(new Slider(150, 30, 300)));
-
             Menu.AddSubMenu(avoidenemy);
             Menu.AddToMainMenu();
 
-            //Game.OnWndProc += Game_OnWndProc;
             Game.OnUpdate += Game_OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
         }
-
-
-  
 
 
         private static void Game_OnUpdate(EventArgs args)
@@ -96,7 +83,7 @@ namespace Courier_Master
                     foreach (var enemy in enemies)
                         if (enemy.Distance2D(courier) < Menu.Item("AvoidEnemy.Range").GetValue<Slider>().Value)
                         {
-                            var shield = courier.Spellbook.SpellR;
+                            var shield = courier.GetAbilityById(AbilityId.courier_shield);
                             if (courier.IsFlying && shield.CanBeCasted())
                                 shield.UseAbility();
                         }
@@ -105,21 +92,12 @@ namespace Courier_Master
             }
 
 
-
             //anti reuse
             foreach (var courier in couriers)
             {
                 //Debug.Assert(_fountain != null, "_fountain != null");					
                 if (Menu.Item("Forced").GetValue<KeyBind>().Active)
-                {
-                 
-                   courier.GetAbilityById(AbilityId.courier_take_stash_and_transfer_items).UseAbility();
-                        
-                  
-
-
-                    //else if (courier.Inventory.FreeSlots.Any() && courier.Distance2D(_fountain) > 1000)
-                }
+                    courier.GetAbilityById(AbilityId.courier_take_stash_and_transfer_items).UseAbility();
 
                 Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
             }
@@ -127,23 +105,19 @@ namespace Courier_Master
 
             //lock at base
             foreach (var courier in couriers.Where(courier => courier.Distance2D(_fountain) > 900))
-            {
                 if (Menu.Item("Lock").GetValue<KeyBind>().Active && !Menu.Item("Forced").GetValue<KeyBind>().Active)
                 {
-
                     courier.GetAbilityById(AbilityId.courier_return_to_base).UseAbility();
 
                     Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
                 }
-            }
 
 
             //secret shop
             foreach (var courier in couriers)
                 if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active)
-                    
-                {
 
+                {
                     {
                         courier.GetAbilityById(AbilityId.courier_go_to_secretshop).UseAbility();
                     }
@@ -165,8 +139,6 @@ namespace Courier_Master
                 Drawing.DrawText("SECRET SHOP", new Vector2((int) HUDInfo.ScreenSizeX() / 2 - 75, 40),
                     new Vector2(26, 26), Color.DarkCyan,
                     FontFlags.AntiAlias | FontFlags.DropShadow | FontFlags.Outline);
-
         }
     }
-
 }
