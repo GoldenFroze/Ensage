@@ -17,7 +17,6 @@ namespace Courier_Master
         private static readonly Menu Menu =
             new Menu("Courier Master", "cb", true, "courier_burst", true).SetFontColor(Color.Aqua);
 
-
         private static bool _loaded;
         private static Unit _fountain;
 
@@ -49,7 +48,6 @@ namespace Courier_Master
             if (!Utils.SleepCheck("rate"))
                 return;
 
-
             var me = ObjectManager.LocalHero;
             var couriers = ObjectManager.GetEntities<Courier>().Where(x => x.IsAlive && x.Team == me.Team);
 
@@ -68,16 +66,13 @@ namespace Courier_Master
                 return;
             }
 
-
             if (Game.IsPaused) return;
 
             if (_fountain == null || !_fountain.IsValid)
                 _fountain = ObjectManager.GetEntities<Unit>()
                     .FirstOrDefault(x => x.Team == me.Team && x.ClassId == ClassId.CDOTA_Unit_Fountain);
 
-
             //avoid enemy
-
             foreach (var courier in couriers)
             {
                 if (Menu.Item("AvoidEnemy.AvoidEnemy1").GetValue<bool>())
@@ -94,34 +89,31 @@ namespace Courier_Master
                 }
                 Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
             }
-
-
             //Deliver(Anti reuse)
             foreach (var courier in couriers)
             {
-                //Debug.Assert(_fountain != null, "_fountain != null");					
                 if (Menu.Item("Forced").GetValue<KeyBind>().Active)
                 {
                     courier.GetAbilityById(AbilityId.courier_take_stash_and_transfer_items).UseAbility();
-
+                }
+                {
                     Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
                 }
             }
-            
             //lock at base
             foreach (var courier in couriers.Where(courier => courier.Distance2D(_fountain) > 900))
+                {
                 if (Menu.Item("Lock").GetValue<KeyBind>().Active && !Menu.Item("Forced").GetValue<KeyBind>().Active)
                 {
                     courier.GetAbilityById(AbilityId.courier_return_to_base).UseAbility();
-
-                    Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
                 }
-
-
-            //secret shop
-            foreach (var courier in couriers)
+            {
+                Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
+            }
+        }
+    //secret shop
+    foreach (var courier in couriers)
                 if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active)
-
                 {
                     {
                         courier.GetAbilityById(AbilityId.courier_go_to_secretshop).UseAbility();
@@ -129,8 +121,6 @@ namespace Courier_Master
                     Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
                 }
         }
-
-
         private static void Drawing_OnDraw(EventArgs args)
         {
             //Color
