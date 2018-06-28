@@ -40,9 +40,9 @@ namespace Courier_Master
 
             Game.OnUpdate += Game_OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
-        }
+        }    
 
-
+            
         private static void Game_OnUpdate(EventArgs args)
         {
             if (!Utils.SleepCheck("rate"))
@@ -65,7 +65,7 @@ namespace Courier_Master
                 _loaded = false;
                 return;
             }
-
+                
             if (Game.IsPaused) return;
 
             if (_fountain == null || !_fountain.IsValid)
