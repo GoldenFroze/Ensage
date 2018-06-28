@@ -93,34 +93,32 @@ namespace Courier_Master
             foreach (var courier in couriers)
             {
                 if (Menu.Item("Forced").GetValue<KeyBind>().Active)
-                {
+                
                     courier.GetAbilityById(AbilityId.courier_take_stash_and_transfer_items).UseAbility();
-                }
+                
                 {
                     Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
                 }
             }
+
             //lock at base
             foreach (var courier in couriers.Where(courier => courier.Distance2D(_fountain) > 900))
-                {
-                if (Menu.Item("Lock").GetValue<KeyBind>().Active && !Menu.Item("Forced").GetValue<KeyBind>().Active)
-                {
-                    courier.GetAbilityById(AbilityId.courier_return_to_base).UseAbility();
-                }
             {
-                Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
-            }
-        }
-    //secret shop
-    foreach (var courier in couriers)
-                if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active)
+                if (Menu.Item("Lock").GetValue<KeyBind>().Active && !Menu.Item("Forced").GetValue<KeyBind>().Active)
+                    courier.GetAbilityById(AbilityId.courier_return_to_base).UseAbility();
                 {
-                    {
-                        courier.GetAbilityById(AbilityId.courier_go_to_secretshop).UseAbility();
-                    }
                     Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
                 }
+            }
+            //secret shop
+            foreach (var courier in couriers)
+                if (Menu.Item("Secret Shop").GetValue<KeyBind>().Active)
+                {
+                    courier.GetAbilityById(AbilityId.courier_go_to_secretshop).UseAbility();
+                }
+            Utils.Sleep(Menu.Item("Cd").GetValue<Slider>().Value, "rate");
         }
+
         private static void Drawing_OnDraw(EventArgs args)
         {
             //Color
