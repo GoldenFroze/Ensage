@@ -191,7 +191,7 @@ namespace StormSharpSDK
             }
 
             //Vars we need before combo.
-            bool HasAghanims = Owner.HasItem(ClassId.CDOTA_Item_UltimateScepter);
+            bool HasAghanims = Owner.HasItem(ItemId.item_ultimate_scepter);
             float VortexCost = Vortex.GetManaCost(Vortex.Level - 1);
             float RemnantCost = Remnant.GetManaCost(Remnant.Level - 1);
             float CurrentMana = Owner.Mana;

@@ -37,11 +37,11 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- NET -->
-    <Reference Include="Ability.Core">
-      <HintPath>C:\GoldenFroze(Staff)\References\Ability.Core.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\..\..\..\Ensage\References\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>C:\GoldenFroze(Staff)\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Service">
       <HintPath>C:\GoldenFroze(Staff)\References\PlaySharp.Service.dll</HintPath>
@@ -62,13 +62,13 @@
   <ItemGroup>
     <!-- Ensage -->
     <Reference Include="SharpDX">
-      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
       <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.XInput">
       <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.XInput.dll</HintPath>
@@ -77,34 +77,34 @@
       <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
       <HintPath>C:\GoldenFroze(Staff)\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\GoldenFroze(Staff)\References\Ensage.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\Ensage.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- PlaySharp -->
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\GoldenFroze(Staff)\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\GoldenFroze(Staff)\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- SDK -->
     <Reference Include="clipper_library">
-      <HintPath>C:\GoldenFroze(Staff)\References\clipper_library.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\GoldenFroze(Staff)\References\Ensage.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.SDK">
-      <HintPath>C:\GoldenFroze(Staff)\References\Ensage.SDK.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Ensage\References\Ensage.SDK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
