@@ -70,7 +70,7 @@ namespace Courier_Master
 
             if (_fountain == null || !_fountain.IsValid)
                 _fountain = ObjectManager.GetEntities<Unit>()
-                    .FirstOrDefault(x => x.Team == me.Team && x.ClassId == ClassId.CDOTA_Unit_Fountain);
+                    .FirstOrDefault(x => x.Team == me.Team && x.NetworkName == ClassId.CDOTA_Unit_Fountain.ToString());
 
             //avoid enemy
             foreach (var courier in couriers)
