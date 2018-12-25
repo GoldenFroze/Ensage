@@ -1,6 +1,7 @@
 ﻿// <copyright file="Program.cs" company="Ensage">
 //    Copyright (c) 2018 Ensage.
 // </copyright>
+//
 
 using System;
 using System.Linq;
